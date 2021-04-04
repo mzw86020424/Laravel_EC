@@ -12,9 +12,13 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $items = Item::paginate(15);
+    public function index(Request $request)
+    {   
+        if($request->has('keyword')) {
+            $items = Item::where('name', 'like', '%'.$request->get('keyword').'%')->paginate(15);
+        } else {   
+            $items = Item::paginate(15);
+        }
         return view('item/index', ['items' => $items]);
     }
 
